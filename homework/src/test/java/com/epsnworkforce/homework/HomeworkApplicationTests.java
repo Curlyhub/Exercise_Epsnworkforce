@@ -35,6 +35,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.epsnworkforce.homework.controllers.HomeController;
 import com.epsnworkforce.homework.models.Customer;
+import com.epsnworkforce.homework.models.Transferency;
 //import com.epsnworkforce.homework.repositories.CustomerRepository;
 import com.epsnworkforce.homework.services.CustomerService;
 
@@ -66,7 +67,7 @@ class HomeworkApplicationTests {
 
 
 	
-
+	/**Basic home call test */
 	@Test
 	public void get_toHomeCall() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/").contentType(MediaType.APPLICATION_JSON))
@@ -74,7 +75,7 @@ class HomeworkApplicationTests {
 				.andExpect(jsonPath("name", is("Hello World")));
 	}
 
-
+	/**Create and save several custumers */
 	@Test
 	public void post_someCustomers_Inserted() throws Exception {
 
@@ -104,7 +105,7 @@ class HomeworkApplicationTests {
 
 	}
 
-
+	/**Get all custumer */
 	@Test
 	public void get_allCustomer() throws Exception {
 
@@ -115,7 +116,7 @@ class HomeworkApplicationTests {
 				.andExpect(status().isOk());
 	}
 
-
+	/**Delete a custumer */
 	@Test
 	public void delete_someCustomer() throws Exception {
 
@@ -130,7 +131,7 @@ class HomeworkApplicationTests {
 		verify(customerServiceTest, times(1)).deleteCustumer(Id);
 	}
 
-
+	/**Update a custumer */
 	@Test
 	public void put_updatesomeCustomer() throws Exception {
 
@@ -147,31 +148,36 @@ class HomeworkApplicationTests {
 	}
 
 
+	/**Create and save a transferency */
+
 	@Test
 	public void post_toTransfer() throws Exception {
 
-		List<Customer> members = new ArrayList<>();
-
-		// Mocking out the vehicle service
-		Mockito.when(customerServiceTest.getAllCustumer()).thenReturn(members);
-
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("name", is("Hello World")));
+		Long Id = (long) 1;
+		Long Idto = (long) 3;
+		var transfer = new Transferency();
+		transfer.setFromId(Id);
+		transfer.setToId(Idto);
+		transfer.setMotive("It's a simple test ");
+		transfer.setStatus(false);
+		
+		String transferJsonString = this.mapper.writeValueAsString(transfer);
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/transfer/create")
+		.contentType(MediaType.APPLICATION_JSON).content(transferJsonString)).andExpect(status().isOk());
 	}
 
 
+	/**Get all transferency */
 	@Test
 	public void get_allTransfer() throws Exception {
 
-		List<Customer> members = new ArrayList<>();
+		List<Transferency> transfers = new ArrayList<Transferency>();
 
 		// Mocking out the vehicle service
-		Mockito.when(customerServiceTest.getAllCustumer()).thenReturn(members);
+		Mockito.when(customerServiceTest.getAllTransferencies()).thenReturn(transfers);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("name", is("Hello World")));
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1//transfers/list").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 
 

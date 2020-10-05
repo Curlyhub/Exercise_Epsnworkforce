@@ -63,12 +63,16 @@ public class Transferency implements java.io.Serializable {
         return fromId;
     }
 
-    public void setName(Long fromId) {
+    public void setFromId(Long fromId) {
         this.fromId = fromId;
     }
 
     public Long getToId() {
         return this.toId;
+    }
+
+    public void setToId(Long toId) {
+        this.toId = toId;
     }
 
     public void setQuantity(double quantity) {
@@ -79,9 +83,6 @@ public class Transferency implements java.io.Serializable {
         return this.quantity;
     }
 
-    public void setCurrency(Long toId) {
-        this.toId = toId;
-    }
 
     public String getMotive() {
         return this.motive;

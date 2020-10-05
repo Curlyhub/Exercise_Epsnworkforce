@@ -123,10 +123,22 @@ public class CustomerServiceImp implements CustomerService{
         }
 
         if (sender.getTreasury()) {
-            return AtomicOperatin(sender, receiver, transfer.getQuantity());
+            var res = AtomicOperatin(sender, receiver, transfer.getQuantity());
+            if(res)
+                transfer.setStatus(true);
+            else
+                transfer.setStatus(true);
+            transferRepository.save(transfer);
+            return res;
         } else {
             if (sender.getMoney() >= transfer.getQuantity()) {
-                return AtomicOperatin(sender, receiver, transfer.getQuantity());
+                var res = AtomicOperatin(sender, receiver, transfer.getQuantity());
+                if(res)
+                    transfer.setStatus(true);
+                else
+                    transfer.setStatus(true);
+                transferRepository.save(transfer);
+                return res;
             }
         }
         return false;
