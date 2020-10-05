@@ -17,16 +17,19 @@ public class HomeController {
   @Autowired
   private CustomerService custumerService;
 
+  /**Basic call*/
   @RequestMapping("/")
   public String home() {
     return "{'name':Hello World}";
   }
 
+  /**List all customer*/
   @GetMapping("/custumer/list")
   public List<Customer> all() {
     return custumerService.getAllCustumer();
   }
 
+  /**Create a new customer */
   @PostMapping("/custumer/create")
   public ResponseEntity<Customer> createMember(@Valid @RequestBody Customer member) {
     var z = custumerService.saveCustumer(member);
@@ -34,12 +37,16 @@ public class HomeController {
 
   }
 
+  
+/**Update a customer by Id: we can do the sane with name... */
   @PutMapping("/custumer/update/{id}")
   public ResponseEntity<Customer> updateMember(@Valid @RequestBody Customer member,
       @PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(custumerService.updateCustumer(member, id));
   }
 
+  
+/**Delete a customer by Id: we can do the sane with name...*/
   @DeleteMapping("/custumer/delete/{id}")
   public ResponseEntity<?> deleteMemeber(@PathVariable Long id) {
     Map<String, String> response = new HashMap<String, String>();
@@ -54,6 +61,7 @@ public class HomeController {
     }
   }
 
+/**Create a transfers */
   @PostMapping("/transfer/create")
   public ResponseEntity<Boolean> transfers(@RequestBody Transferency transfer) throws IOException {
     var z = custumerService.makeTransfer(transfer);
@@ -61,7 +69,7 @@ public class HomeController {
 
   }
 
-
+/**Get the transfers */
   @GetMapping("/transfers/list")
   public List<Transferency>  transfers() {
    // var z = custumerService.(transfer);
